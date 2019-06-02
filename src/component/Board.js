@@ -7,6 +7,7 @@ import Cell from './Cell';
 class Board extends Component {
 
     render() {
+        // 1P의 Board에 채워질 Cell을 만들어준다.
         const player_1 = this.props.pick_1.map((val, id) =>
             (<Cell
                 active={((this.props.hits).includes(val))}
@@ -19,6 +20,7 @@ class Board extends Component {
             />)
         );
 
+        // 1P의 Board에 채워질 Cell을 만들어준다.
         const player_2 = this.props.pick_2.map((val, id) =>
             <Cell
                 active={((this.props.hits).includes(val))}
@@ -32,7 +34,6 @@ class Board extends Component {
         );
         return (
             <div className='play'>
-
                 <div>
                     <div className='user'>1P</div>
                     <div style={{ width: 46 * 5, height: 46 * 5 }} className="group">
@@ -54,6 +55,7 @@ class Board extends Component {
 
 }
 
+// Board에서 사용중인 store 데이터
 let mapStateToProps = (state) => {
     return {
         hits: state.hits
@@ -66,8 +68,10 @@ let mapStateToProps = (state) => {
     };
 }
 
+// Board에서 발생한 action을 dispatch로 넘겨준다
 let mapDispatchToProps = (dispatch) => {
     return {
+        // Cell 클릭했을때의 액션
         onPick: (value, user) => dispatch(pick(value, user)),
     }
 }

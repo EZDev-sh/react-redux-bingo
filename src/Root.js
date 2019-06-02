@@ -4,7 +4,9 @@ import { createStore } from 'redux';
 import App from './component/App';
 import bingoReducer from './reducer';
 
+// store 생성
 const store = createStore(bingoReducer);
+
 const Root = () => {
   return (
     <Provider store={store}>

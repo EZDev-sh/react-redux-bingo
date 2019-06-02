@@ -1,7 +1,9 @@
 import { START, RESTART, PICK } from '../action';
 
+// 빙고의 크기 지정
 const dimension = 5;
 
+// State 초기화
 const initialState = {
     check_start: 'START'
     , playing: false
@@ -13,6 +15,7 @@ const initialState = {
     , lined_2: []
 }
 
+// 배열에 1~25 사이의 수 25개를 만들어 배열로 반환한다.
 function generateNums(max) {
     const pool = Array.apply(null, Array(max + 1)).map(function (_, i) { return i; });
     let arr = [];
@@ -27,6 +30,7 @@ function generateNums(max) {
     return arr;
 }
 
+// 누른 셀안의 숫자를 hits 배열에 추가한다.
 function pickNums(num, hits) {
     const arr = [...hits];
     arr.push(num)
@@ -34,6 +38,7 @@ function pickNums(num, hits) {
     return arr;
 }
 
+// hits 배열에 있는 값과 각 플레이어의 보드와 비교하여 빙고를 확인한다.
 function checkLine(arr, picks) {
     const lines = [];
     let slash1 = [];
@@ -80,6 +85,7 @@ function checkLine(arr, picks) {
 
 }
 
+// 게임의 종료후 초기화 값을 초기화 한다.
 function init(state) {
     state.check_start = 'START';
     state.playing = false;
@@ -91,7 +97,9 @@ function init(state) {
     state.lined_2 = [];
 }
 
+// Cell을 눌렀을때 처리하는 것을 관리한다.
 function pick(num, player, state) {
+    // 경고 팝업
     if (player === '1P' && !state.turn) {
         alert('잘못된 차례입니다.');
         return state;
@@ -100,14 +108,19 @@ function pick(num, player, state) {
         alert('잘모된 차례입니다.');
         return state;
     }
+    // 턴 변경
     state.turn = !state.turn
+    // 클릭한 Cell의 숫자를 hits에 추가
     state.hits = pickNums(num, state.hits);
+    // 각 플레이어의 빙고를 확인한다.
     state.lined_1 = checkLine(state.pick_1, state.hits);
     state.lined_2 = checkLine(state.pick_2, state.hits);
 
+    // 빙고 갯수
     const bingo_1 = state.lined_1.length / dimension;
     const bingo_2 = state.lined_2.length / dimension
 
+    // 빙고 종료 조건 및 초기화
     if (bingo_1 >= dimension && bingo_2 >= dimension) {
         alert('무승부 입니다.')
         init(state);
@@ -124,19 +137,17 @@ function pick(num, player, state) {
     return state;
 }
 
-
+// action 관리
 export default function reducer(state = initialState, action) {
-    // 리듀서 함수에서는 액션의 타입에 따라 변화된 상태를 정의하여 반환합니다.
-    // state = initialState 이렇게 하면 initialState 가 기본 값으로 사용됩니다.
     switch (action.type) {
-        case START:
+        case START:     // Start 버튼을 눌렀을때 실행
             return Object.assign({}, state, {
                 check_start: 'RESTART'
                 , playing: true
                 , pick_1: generateNums(dimension * dimension)
                 , pick_2: generateNums(dimension * dimension)
             });
-        case RESTART:
+        case RESTART:   // Restart 버튼을 눌렀을때 실행
             return Object.assign({}, state, {
                 check_start: 'RESTART'
                 , pick_1: generateNums(dimension * dimension)
@@ -145,7 +156,7 @@ export default function reducer(state = initialState, action) {
                 , lined_2: []
                 , hits: []
             });
-        case PICK:
+        case PICK:      // 하나의 Cell을 눌넜을때 실행
             return Object.assign({}, state, {
                 state: pick(action.num, action.player, state)
             });

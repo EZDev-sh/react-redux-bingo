@@ -24,12 +24,14 @@ class BingoContainer extends Component {
   }
 }
 
+// BingoContainer에서 사용중인 store 데이터
 let mapStateToProps = (state) => {
   return {
       check_start: state.check_start
   };
 }
 
+// BoardContainer에서 발생한 action을 dispatch로 넘겨준다
 let mapDispatchToProps = (dispatch) => {
   return {
       onStart: () => dispatch(start()),
