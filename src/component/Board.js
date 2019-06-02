@@ -31,13 +31,22 @@ class Board extends Component {
             />
         );
         return (
-            <div>
-                <div style={{ width: 46 * 5, height: 46 * 5 }} className="group">
-                    {player_1}
+            <div className='play'>
+
+                <div>
+                    <div className='user'>1P</div>
+                    <div style={{ width: 46 * 5, height: 46 * 5 }} className="group">
+                        {player_1}
+                    </div>
                 </div>
-                <div style={{ width: 46 * 5, height: 46 * 5 }} className="group">
-                    {player_2}
+
+                <div>
+                    <div className='user'>2P</div>
+                    <div style={{ width: 46 * 5, height: 46 * 5 }} className="group">
+                        {player_2}
+                    </div>
                 </div>
+
             </div>
 
         );
