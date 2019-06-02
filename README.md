@@ -1,5 +1,5 @@
 # 5 X 5 Bingo (with react, redux)
-react와 redux를 이용하 5 X 5 빙고입니다.
+react와 redux를 이용한 5 X 5 빙고입니다.
 
 ### 사용기술
 * node.js (version: 12.1.0)
