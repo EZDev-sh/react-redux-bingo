@@ -1,0 +1,23 @@
+.btn{
+    background-color: black;
+    width: 24px;
+    height: 24px;
+    margin: 1px;
+    padding: 10px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    color: white;
+}
+.black{
+    color: black;
+}
+
+.active{
+    background-color: red;
+}
+
+.lined{
+    background-color: yellow;
+    color: black;
+  }
