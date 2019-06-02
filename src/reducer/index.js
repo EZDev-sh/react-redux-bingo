@@ -30,28 +30,28 @@ function generateNums(max) {
 function pickNums(num, hits) {
     const arr = [...hits];
     arr.push(num)
-    
+
     return arr;
 }
 
-function checkLine(arr, picks){
+function checkLine(arr, picks) {
     const lines = [];
     let slash1 = [];
     let slash2 = [];
 
-    for(let i = 0; i < dimension; i++){
-      let row = [];
-      let col = [];
-      
-      for(let o = 0; o < dimension; o++){
-        row.push(o + dimension * i);
-        col.push(o * dimension + i);
-      }
-      lines.push(row);
-      lines.push(col);
-      
-      slash1.push(i + dimension * i);
-      slash2.push((dimension - 1) * (i + 1));
+    for (let i = 0; i < dimension; i++) {
+        let row = [];
+        let col = [];
+
+        for (let o = 0; o < dimension; o++) {
+            row.push(o + dimension * i);
+            col.push(o * dimension + i);
+        }
+        lines.push(row);
+        lines.push(col);
+
+        slash1.push(i + dimension * i);
+        slash2.push((dimension - 1) * (i + 1));
     }
     lines.push(slash1);
     lines.push(slash2);
@@ -59,40 +59,67 @@ function checkLine(arr, picks){
     const hits = [...picks];
 
     let rtn = [];
-    for(let i = 0; i < lines.length; i++){
-      let line_is_hit = true;
-      
-      for(let num in lines[i]){
-        if(undefined === arr[lines[i][num]] || !hits.includes(arr[lines[i][num]])){
-          line_is_hit = false;
-          break;
-        }
-      }
+    for (let i = 0; i < lines.length; i++) {
+        let line_is_hit = true;
 
-      if(line_is_hit){
-        for(let num in lines[i]){
-          rtn.push(lines[i][num]);
+        for (let num in lines[i]) {
+            if (undefined === arr[lines[i][num]] || !hits.includes(arr[lines[i][num]])) {
+                line_is_hit = false;
+                break;
+            }
         }
-      }
-      
+
+        if (line_is_hit) {
+            for (let num in lines[i]) {
+                rtn.push(lines[i][num]);
+            }
+        }
+
     }
     return rtn;
 
 }
 
+function init(state) {
+    state.check_start = 'START';
+    state.playing = false;
+    state.turn = true;
+    state.pick_1 = new Array(dimension * dimension).fill(0);
+    state.pick_2 = new Array(dimension * dimension).fill(0);
+    state.hits = [];
+    state.lined_1 = [];
+    state.lined_2 = [];
+}
+
 function pick(num, player, state) {
-    if ( player === '1P' && !state.turn) {
-        alert('player 2의 차례입니다.');
+    if (player === '1P' && !state.turn) {
+        alert('잘못된 차례입니다.');
         return state;
     }
-    else if ( player === '2P' && state.turn) {
-        alert('player 1의 차례입니다.');
+    else if (player === '2P' && state.turn) {
+        alert('잘모된 차례입니다.');
         return state;
     }
     state.turn = !state.turn
     state.hits = pickNums(num, state.hits);
     state.lined_1 = checkLine(state.pick_1, state.hits);
     state.lined_2 = checkLine(state.pick_2, state.hits);
+
+    const bingo_1 = state.lined_1.length / dimension;
+    const bingo_2 = state.lined_2.length / dimension
+
+    if (bingo_1 >= dimension && bingo_2 >= dimension) {
+        alert('무승부 입니다.')
+        init(state);
+    }
+    else if (bingo_1 >= dimension) {
+        alert('1P가 빙고를 완성했습니다.')
+        init(state);
+    }
+    else if (bingo_2 >= dimension) {
+        alert('2P가 빙고를 완성했습니다.')
+        init(state);
+    }
 
     return state;
 }
